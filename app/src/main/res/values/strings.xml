@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_popular">Popular</string>
+    <string name="menu_top_rated">Top Rated</string>
+    <string name="refresh_instructions">No movies loaded. Press refresh to continue.</string>
+    <string name="dialog_retry">Retry</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_title_no_connection">Connection Required</string>
+    <string name="dialog_description_no_connection">Unable to connect to the internet</string>
+    <string name="dialog_title_parse_exception">Invalid Data</string>
+    <string name="dialog_description_parse_exception">Unable to process the movie data</string>
+    <string name="dialog_title_interrupted_exception">No Data Received</string>
+    <string name="dialog_description_interrupted_exception">Could not retrieve movie data</string>
+    <string name="extra_index">com.aaronfarr.popularmovies.index</string>
+    <string name="detail_release">Released\u0020</string>
+    <string name="detail_interpunct">\u0020•\u0020</string>
+    <string name="detail_votes">\u0020votes</string>
+    <string name="movie_poster_description">movie poster</string>
+    <string name="movie_backdrop_description">movie backdrop</string>
+</resources>
