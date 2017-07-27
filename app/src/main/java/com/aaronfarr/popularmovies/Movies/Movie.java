@@ -18,7 +18,6 @@ public class Movie implements Parcelable {
     private String mRelease;
     private String mPoster;
     private String mBackdrop;
-    private String mTag;
 
     // Parcelable - Unwrap Parcel
     public Movie(Parcel in) {
@@ -67,7 +66,7 @@ public class Movie implements Parcelable {
     // Retrieve the full movie backdrop image URL
     public String getBackdrop() {
         if( null == mBackdrop ) return "";
-        String baseURL = "http://image.tmdb.org/t/p/w500/";
+        String baseURL = "http://image.tmdb.org/t/p/w1280/";
         return baseURL.concat(mBackdrop);
     }
     public String getTitle() {

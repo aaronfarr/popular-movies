@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,12 +20,17 @@ import com.aaronfarr.popularmovies.Movies.Movies;
 import com.aaronfarr.popularmovies.Network.NetworkUtilities;
 import com.aaronfarr.popularmovies.Network.RestApi;
 import com.aaronfarr.popularmovies.View.RecyclerViewAdapter;
+import com.squareup.leakcanary.LeakCanary;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
+import butterknife.BindString;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.RecyclerViewAdapterOnClickHandler {
-
+    @BindString(R.string.extra_index) String strExtraIndex;
+    @BindString(R.string.the_movie_db_api_key) String strApiKey;
     private boolean mMovieDataLoaded;
     private RecyclerViewAdapter recyclerViewAdapter;
     private Movies mMovies;
@@ -34,6 +40,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // ----- Leak Canary
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(getApplication());
+        // ----- Butter Knife
+        ButterKnife.bind(this);
         // ----- Attempt to load movie data
         mMovieDataLoaded = false;
         mMovies = new Movies();
@@ -51,13 +66,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         boolean connectivity = NetworkUtilities.checkConnectivity(context);
         if( connectivity ) {
             try {
-                String api_url = "https://api.themoviedb.org/3/movie/popular?api_key=".concat(
-                  getString(R.string.themoviedb_api_key)
-                );
+                String api_url = "https://api.themoviedb.org/3/movie/popular?api_key=".concat(strApiKey);
                 JSONObject popularMoviesJSON  = RestApi.get(api_url);
                 mMovies.parseJSON( popularMoviesJSON );
-                //JSONObject topRatedMoviesJSON = RestApi.get("https://api.themoviedb.org/3/movie/top_rated?api_key=234e896a24d156c6af15ce99a38db43f");
-                //mMovies.parseJSON( topRatedMoviesJSON );
                 mMovieDataLoaded = true;
                 // ----------- Update UI
                 progressBar.setVisibility(View.INVISIBLE);
@@ -153,16 +164,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private void createMovieGrid() {
         Context context = this;
-        int spanCount = 2;
         GridLayoutManager layoutManager =
-                new GridLayoutManager(context, spanCount);
+                new GridLayoutManager(context, numberOfColumns());
         RecyclerView mRecyclerView = findViewById(R.id.rv_movies);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         recyclerViewAdapter = new RecyclerViewAdapter(context, mMovies.getMovies(), this);
         mRecyclerView.setAdapter(recyclerViewAdapter);
     }
-
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the poster
+        int widthDivider = 400;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
+    }
     private void updateMovieGrid() {
         if( mFilter > 0 ) mMovies.filter(mFilter);
         if( null != recyclerViewAdapter )
@@ -174,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Context context = this;
         Intent intent = new Intent(context, DetailActivity.class);
         Movie movie = mMovies.get(position);
-        intent.putExtra(getString(R.string.extra_index), movie);
+        intent.putExtra(strExtraIndex, movie);
         startActivity( intent );
     }
 

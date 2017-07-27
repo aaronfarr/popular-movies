@@ -10,6 +10,8 @@ import com.aaronfarr.popularmovies.Movies.Movie;
 import com.aaronfarr.popularmovies.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewItem> {
 
@@ -52,12 +54,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class RecyclerViewItem extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public ImageView moviePoster;
+        @BindView(R.id.iv_movie_poster) ImageView moviePoster;
 
         public RecyclerViewItem(View itemView) {
             super(itemView);
-            moviePoster = itemView.findViewById(R.id.iv_movie_poster);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

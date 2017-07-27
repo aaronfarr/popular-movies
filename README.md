@@ -10,7 +10,7 @@ Inside this file add a string with a valid themoviedb.org API key
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="themoviedb_api_key">234e896a24d156c6af15ce99a38db43f</string>
+    <string name="the_movie_db_api_key">234e896a24d156c6af15ce99a38db43f</string>
 </resources>
 ```
 

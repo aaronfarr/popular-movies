@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#E53935</color>
     <color name="colorAccent">#2196F3</color>
     <color name="colorMaterialClouds">#ecf0f1</color>
+    <color name="colorMaterialWhite">#ffffff</color>
 </resources>
