@@ -1,4 +1,4 @@
-package com.aaronfarr.popularmovies.Movies;
+package com.aaronfarr.popularmovies.movies;
 
 import android.os.Parcel;
 import android.os.Parcelable;

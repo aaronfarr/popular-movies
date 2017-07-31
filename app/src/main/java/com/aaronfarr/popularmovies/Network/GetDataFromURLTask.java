@@ -1,4 +1,4 @@
-package com.aaronfarr.popularmovies.Network;
+package com.aaronfarr.popularmovies.network;
 
 import android.os.AsyncTask;
 import java.io.IOException;

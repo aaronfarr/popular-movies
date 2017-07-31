@@ -1,4 +1,4 @@
-package com.aaronfarr.popularmovies.Network;
+package com.aaronfarr.popularmovies.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

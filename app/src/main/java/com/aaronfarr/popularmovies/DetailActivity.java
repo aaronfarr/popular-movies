@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.aaronfarr.popularmovies.Movies.Movie;
+import com.aaronfarr.popularmovies.movies.Movie;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindString;

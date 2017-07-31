@@ -1,4 +1,4 @@
-package com.aaronfarr.popularmovies.View;
+package com.aaronfarr.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.aaronfarr.popularmovies.Movies.Movie;
+import com.aaronfarr.popularmovies.movies.Movie;
 import com.aaronfarr.popularmovies.R;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;

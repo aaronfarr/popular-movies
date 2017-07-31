@@ -15,10 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.aaronfarr.popularmovies.Movies.Movie;
-import com.aaronfarr.popularmovies.Movies.Movies;
-import com.aaronfarr.popularmovies.Network.NetworkUtilities;
-import com.aaronfarr.popularmovies.View.RecyclerViewAdapter;
+import com.aaronfarr.popularmovies.movies.Movie;
+import com.aaronfarr.popularmovies.movies.Movies;
+import com.aaronfarr.popularmovies.network.NetworkUtilities;
+import com.aaronfarr.popularmovies.adapters.RecyclerViewAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
@@ -209,9 +209,4 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         startActivity( intent );
     }
 
-//    @Override
-//    protected void onPostResume() {
-//        super.onPostResume();
-//        updateMovieGrid();
-//    }
 }
