@@ -20,8 +20,6 @@ import com.aaronfarr.popularmovies.Movies.Movies;
 import com.aaronfarr.popularmovies.Network.NetworkUtilities;
 import com.aaronfarr.popularmovies.Network.RestApi;
 import com.aaronfarr.popularmovies.View.RecyclerViewAdapter;
-import com.squareup.leakcanary.LeakCanary;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
@@ -31,31 +29,31 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.RecyclerViewAdapterOnClickHandler {
     @BindString(R.string.extra_index) String strExtraIndex;
     @BindString(R.string.the_movie_db_api_key) String strApiKey;
+    RecyclerView mRecyclerView;
     private boolean mMovieDataLoaded;
+    private boolean mLoading;
     private RecyclerViewAdapter recyclerViewAdapter;
+    private Movies mPopularMovies;
+    private Movies mTopRatedMovies;
+    private Movies mAllMovies;
     private Movies mMovies;
-    private int mFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // ----- Leak Canary
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(getApplication());
         // ----- Butter Knife
         ButterKnife.bind(this);
         // ----- Attempt to load movie data
         mMovieDataLoaded = false;
-        mMovies = new Movies();
+        mAllMovies = new Movies();
+        mTopRatedMovies = new Movies();
+        mPopularMovies = new Movies();
         loadMovieData();
     }
 
     private void loadMovieData() {
+        mLoading = true;
         Context context = this;
         // ----------- Initiate "loading" state UI
         final ProgressBar progressBar = findViewById(R.id.pb_data_loading);
@@ -66,15 +64,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         boolean connectivity = NetworkUtilities.checkConnectivity(context);
         if( connectivity ) {
             try {
-                String api_url = "https://api.themoviedb.org/3/movie/popular?api_key=".concat(strApiKey);
-                JSONObject popularMoviesJSON  = RestApi.get(api_url);
-                mMovies.parseJSON( popularMoviesJSON );
+                String popularApiUrl = "https://api.themoviedb.org/3/movie/popular?api_key=".concat(strApiKey);
+                JSONObject popularMoviesJSON  = RestApi.get(popularApiUrl);
+                mPopularMovies.parseJSON( popularMoviesJSON );
+                mPopularMovies.sort(mPopularMovies.MOVIES_FILTER_POPULAR);
+                String topRatedApiUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=".concat(strApiKey);
+                JSONObject topRatedMoviesJSON = RestApi.get(topRatedApiUrl);
+                mTopRatedMovies.parseJSON( topRatedMoviesJSON );
+                mTopRatedMovies.sort(mTopRatedMovies.MOVIES_FILTER_TOP_RATED);
                 mMovieDataLoaded = true;
+                // ----------- Load Movies?
+                // Spec is not clear about what movies to show by default - showing an unordered
+                // list of all movies by default, which can then be further filtered by category.
+                // The UX in any other scenario would mean potentially showing movies that weren't
+                // in the original list, or showing a list that doesn't change
+                mAllMovies.parseJSON(popularMoviesJSON);
+                mAllMovies.parseJSON(topRatedMoviesJSON);
+                mMovies = mAllMovies;
                 // ----------- Update UI
                 progressBar.setVisibility(View.INVISIBLE);
                 textView.setVisibility(View.INVISIBLE);
                 // ----------- Load Recycler View
-                createMovieGrid();
+                createMovieGrid(); // Specs are not clear about the default view
             } catch (ExecutionException | InterruptedException e) {
                 displayDialog(
                         getString(R.string.dialog_title_interrupted_exception),
@@ -92,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     getString(R.string.dialog_description_no_connection)
             );
         }
+        mLoading = false;
     }
 
     private void displayDialog( String title, String description ) {
@@ -136,14 +148,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         switch( item.getItemId() ) {
             case R.id.menu_refresh:
-                loadMovieData();
+                if( !mLoading ) loadMovieData();
                 return true;
             case R.id.menu_popular:
-                mFilter = mMovies.MOVIES_FILTER_POPULAR;
+                mMovies = mPopularMovies;
                 updateMovieGrid();
                 return true;
             case R.id.menu_top_rated:
-                mFilter = mMovies.MOVIES_FILTER_TOP_RATED;
+                mMovies = mTopRatedMovies;
                 updateMovieGrid();
                 return true;
             default:
@@ -166,12 +178,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Context context = this;
         GridLayoutManager layoutManager =
                 new GridLayoutManager(context, numberOfColumns());
-        RecyclerView mRecyclerView = findViewById(R.id.rv_movies);
+        mRecyclerView = findViewById(R.id.rv_movies);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         recyclerViewAdapter = new RecyclerViewAdapter(context, mMovies.getMovies(), this);
         mRecyclerView.setAdapter(recyclerViewAdapter);
     }
+
+    private void updateMovieGrid() {
+        recyclerViewAdapter = new RecyclerViewAdapter(this, mMovies.getMovies(), this);
+        mRecyclerView.swapAdapter(recyclerViewAdapter, false);
+    }
+
     private int numberOfColumns() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -181,11 +199,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         int nColumns = width / widthDivider;
         if (nColumns < 2) return 2;
         return nColumns;
-    }
-    private void updateMovieGrid() {
-        if( mFilter > 0 ) mMovies.filter(mFilter);
-        if( null != recyclerViewAdapter )
-            recyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -197,9 +210,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         startActivity( intent );
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        updateMovieGrid();
-    }
+//    @Override
+//    protected void onPostResume() {
+//        super.onPostResume();
+//        updateMovieGrid();
+//    }
 }

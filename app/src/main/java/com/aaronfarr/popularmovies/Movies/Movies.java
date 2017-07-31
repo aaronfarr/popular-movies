@@ -13,6 +13,7 @@ public class Movies {
     private ArrayList<Movie> movies = new ArrayList<>();
     public int MOVIES_FILTER_POPULAR = 1;
     public int MOVIES_FILTER_TOP_RATED = 2;
+    public boolean bSorted = false;
 
     public int parseJSON(JSONObject json) throws JSONException {
         String JSON_RESULTS_NODE = "results";
@@ -39,7 +40,7 @@ public class Movies {
         return null;
     }
 
-    public void filter( int tag ) {
+    public void sort( int tag ) {
         if( tag == MOVIES_FILTER_TOP_RATED ) {
             Collections.sort(movies, new Comparator<Movie>() {
                 @Override
@@ -47,6 +48,7 @@ public class Movies {
                     return (int) (movie2.getRating() * 10) - (int) (movie1.getRating() * 10);
                 }
             });
+            bSorted = true;
         }
         if( tag == MOVIES_FILTER_POPULAR ) {
             Collections.sort(movies, new Comparator<Movie>() {
@@ -55,6 +57,7 @@ public class Movies {
                     return movie2.getVoteCount() - movie1.getVoteCount();
                 }
             });
+            bSorted = true;
         }
     }
 

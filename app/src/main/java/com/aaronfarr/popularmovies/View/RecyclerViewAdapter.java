@@ -38,6 +38,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         int intPosterWidth = 500;
         Picasso.with(context)
                 .load(movie.getPoster(intPosterWidth))
+                .placeholder(R.drawable.poster_placeholder)
+                .error(R.drawable.poster_placeholder)
                 .into(holder.moviePoster);
     }
 

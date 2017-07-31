@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -25,7 +25,7 @@
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
             android:background="@color/colorMaterialWhite"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="@dimen/small_header_offset">
         </View>
         <!-- Content -->
         <LinearLayout
@@ -37,53 +37,52 @@
                 android:id="@+id/iv_detail_movie_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
+                android:padding="@dimen/extra_padding"
                 android:contentDescription="@string/movie_poster_description" />
             <!-- Column Two -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="@dimen/extra_padding">
                 <TextView
                     android:id="@+id/tv_detail_rating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="42sp"
+                    android:textSize="@dimen/rating_text_size"
                     android:textAlignment="textEnd"
                     android:gravity="end"
-                    android:minHeight="100dp"/>
+                    android:minHeight="@dimen/small_header_offset"
+                    tools:text="5.0" />
                 <TextView
                     android:id="@+id/tv_detail_movie_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="26sp"
+                    android:textSize="@dimen/title_text_size"
+                    tools:text="Captain America Civil War"
                     />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp">
+                    android:paddingTop="@dimen/default_padding">
                     <TextView
                         android:id="@+id/tv_detail_movie_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp" />
-                    <TextView
-                        android:id="@+id/tv_detail_votes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/subtitle_text_size"
+                        tools:text="2016 • 12,345 votes" />
                 </LinearLayout>
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp">
+                    android:paddingTop="@dimen/default_padding">
                     <TextView
                         android:id="@+id/tv_detail_movie_synopsis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/default_text_size"
+                        tools:text="Political pressure mounts to install a system of accountability when the actions of the Avengers lead to collateral damage. The new status quo deeply divides members of the team. Captain America (Chris Evans) believes superheroes should remain free to defend humanity without government interference. Iron Man (Robert Downey Jr.) sharply disagrees and supports oversight. As the debate escalates into an all-out feud, Black Widow (Scarlett Johansson) and Hawkeye (Jeremy Renner) must pick a side."/>
                 </ScrollView>
             </LinearLayout>
         </LinearLayout>
