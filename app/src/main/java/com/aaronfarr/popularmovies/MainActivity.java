@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.aaronfarr.popularmovies.Movies.Movie;
 import com.aaronfarr.popularmovies.Movies.Movies;
 import com.aaronfarr.popularmovies.Network.NetworkUtilities;
-import com.aaronfarr.popularmovies.Network.RestApi;
 import com.aaronfarr.popularmovies.View.RecyclerViewAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         if( connectivity ) {
             try {
                 String popularApiUrl = "https://api.themoviedb.org/3/movie/popular?api_key=".concat(strApiKey);
-                JSONObject popularMoviesJSON  = RestApi.get(popularApiUrl);
+                JSONObject popularMoviesJSON  = NetworkUtilities.getJsonFromUrl(popularApiUrl);
                 mPopularMovies.parseJSON( popularMoviesJSON );
                 mPopularMovies.sort(mPopularMovies.MOVIES_FILTER_POPULAR);
                 String topRatedApiUrl = "https://api.themoviedb.org/3/movie/top_rated?api_key=".concat(strApiKey);
-                JSONObject topRatedMoviesJSON = RestApi.get(topRatedApiUrl);
+                JSONObject topRatedMoviesJSON = NetworkUtilities.getJsonFromUrl(topRatedApiUrl);
                 mTopRatedMovies.parseJSON( topRatedMoviesJSON );
                 mTopRatedMovies.sort(mTopRatedMovies.MOVIES_FILTER_TOP_RATED);
                 mMovieDataLoaded = true;
