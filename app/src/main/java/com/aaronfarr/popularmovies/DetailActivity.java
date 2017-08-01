@@ -1,5 +1,6 @@
 package com.aaronfarr.popularmovies;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -26,33 +27,35 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         // -----------
-        Bundle extras = getIntent().getExtras();
-        Movie movie = extras.getParcelable(strExtraIndex);
-        // -----------
-        int width = 500;
-        String poster = movie.getPoster(width);
-        Picasso.with(this)
-                .load(poster)
-                .error(R.drawable.poster_placeholder)
-                .placeholder(R.drawable.poster_placeholder)
-                .into(ivPoster);
-        // -----------
-        String backdrop = movie.getBackdrop();
-        Picasso.with(this)
-                .load(backdrop)
-                .error(R.drawable.backdrop_placeholder)
-                .placeholder(R.drawable.backdrop_placeholder)
-                .into(ivBackdrop);
-        // -----------
-        tvMovieRating.setText( String.valueOf(movie.getRating()) );
-        tvMovieTitle.setText( movie.getTitle() );
-        tvMovieSynopsis.setText( movie.getSynopsis() );
-        tvMovieDate.setText(
-                getString(R.string.detail_release)
-                .concat(movie.getYear())
-                .concat(getString(R.string.detail_interpunct))
-                .concat(movie.getVotes())
-                .concat(getString(R.string.detail_votes))
-        );
+        Intent intent = getIntent();
+        if( null != intent && intent.hasExtra(strExtraIndex) ) {
+            Movie movie = intent.getParcelableExtra(strExtraIndex);
+            // -----------
+            int width = 500;
+            String poster = movie.getPoster(width);
+            Picasso.with(this)
+                    .load(poster)
+                    .error(R.drawable.poster_placeholder)
+                    .placeholder(R.drawable.poster_placeholder)
+                    .into(ivPoster);
+            // -----------
+            String backdrop = movie.getBackdrop();
+            Picasso.with(this)
+                    .load(backdrop)
+                    .error(R.drawable.backdrop_placeholder)
+                    .placeholder(R.drawable.backdrop_placeholder)
+                    .into(ivBackdrop);
+            // -----------
+            tvMovieRating.setText(String.valueOf(movie.getRating()));
+            tvMovieTitle.setText(movie.getTitle());
+            tvMovieSynopsis.setText(movie.getSynopsis());
+            tvMovieDate.setText(
+                    getString(R.string.detail_release)
+                            .concat(movie.getYear())
+                            .concat(getString(R.string.detail_interpunct))
+                            .concat(movie.getVotes())
+                            .concat(getString(R.string.detail_votes))
+            );
+        }
     }
 }

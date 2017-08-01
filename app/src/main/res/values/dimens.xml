@@ -9,4 +9,6 @@
     <dimen name="progress_bar_size">46dp</dimen>
     <dimen name="header_offset">200dp</dimen>
     <dimen name="small_header_offset">100dp</dimen>
+    <dimen name="small_screen_poster_padding">30dp</dimen>
+    <dimen name="small_screen_poster_extra_padding">60dp</dimen>
 </resources>

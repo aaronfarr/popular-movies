@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- Images -->
+        <FrameLayout
+            android:id="@+id/ll_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorMaterialClouds"
+            android:minHeight="@dimen/small_header_offset" >
+            <ImageView
+                android:id="@+id/iv_movie_backdrop"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:alpha="0.5"
+                android:contentDescription="@string/movie_backdrop_description" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/iv_detail_movie_poster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/small_screen_poster_padding"
+                    android:paddingLeft="@dimen/small_screen_poster_extra_padding"
+                    android:paddingRight="@dimen/small_screen_poster_extra_padding"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitStart"
+                    android:contentDescription="@string/movie_poster_description"
+                    />
+                <TextView
+                    android:id="@+id/tv_detail_rating"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/rating_text_size"
+                    android:textAlignment="center"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="@dimen/default_padding"
+                    android:paddingBottom="@dimen/default_padding"
+                    tools:text="5.0"/>
+            </LinearLayout>
+        </FrameLayout>
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/extra_padding"
+            android:layout_marginLeft="@dimen/extra_padding">
+            <TextView
+                android:id="@+id/tv_detail_movie_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/title_text_size"
+                android:layout_marginTop="@dimen/extra_padding"
+                tools:text="Captain America Civil War"/>
+            <TextView
+                android:id="@+id/tv_detail_movie_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/subtitle_text_size"
+                android:paddingTop="@dimen/default_padding"
+                tools:text="2016 • 12,345 votes"/>
+            <TextView
+                android:id="@+id/tv_detail_movie_synopsis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/default_text_size"
+                android:paddingTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/extra_padding"
+                tools:text="Political pressure mounts to install a system of accountability when the actions of the Avengers lead to collateral damage. The new status quo deeply divides members of the team. Captain America (Chris Evans) believes superheroes should remain free to defend humanity without government interference. Iron Man (Robert Downey Jr.) sharply disagrees and supports oversight. As the debate escalates into an all-out feud, Black Widow (Scarlett Johansson) and Hawkeye (Jeremy Renner) must pick a side."
+            />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
